@@ -201,7 +201,7 @@ const UIMockup: React.FC<UIMockupProps> = ({ primary, secondary, accent, theme }
     <div className={`ui-mockup theme-${theme}`} style={styles.container}>
       <header className="mockup-header">
         <div>
-          <p className="mockup-greeting" style={styles.subHeaderText}>Hi John</p>
+          <p className="mockup-greeting" style={styles.subHeaderText}>Hi Neelakshi</p>
           <h3 className="mockup-title" style={styles.headerText}>What do you want to learn?</h3>
         </div>
         <div className="mockup-avatar" style={theme === 'dark' ? {backgroundColor: secondary, opacity: 0.7} : {backgroundColor: primary, opacity: 0.3}}></div>
