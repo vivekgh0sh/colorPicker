@@ -160,14 +160,15 @@ const UIMockup: React.FC<UIMockupProps> = ({ primary, secondary, accent, theme }
   const styles = useMemo(() => {
     const primaryContrast = getContrastColor(primary);
     const accentContrast = getContrastColor(accent);
+    const secondaryContrast = getContrastColor(secondary);
 
     if (theme === 'dark') {
       return {
         container: { backgroundColor: primary, color: primaryContrast },
         headerText: { color: primaryContrast },
         subHeaderText: { color: primaryContrast, opacity: 0.8 },
-        card: { backgroundColor: primaryContrast, color: primary },
-        cardSubText: { color: primary, opacity: 0.7 },
+        card: { backgroundColor: secondary, color: secondaryContrast },
+        cardSubText: { color: secondaryContrast, opacity: 0.7 },
         historyTitle: { color: primaryContrast },
         historyText: { color: primaryContrast, opacity: 0.9 },
         historyProgress: { backgroundColor: secondary, opacity: 0.5 },
@@ -245,9 +246,26 @@ const UIMockup: React.FC<UIMockupProps> = ({ primary, secondary, accent, theme }
 
 
 const App: React.FC = () => {
-  const [primary, setPrimary] = useState('#8a5a2a');
-  const [secondary, setSecondary] = useState('#ffffff');
-  const [accent, setAccent] = useState('#6b2a1d');
+    const getInitialColors = () => {
+    try {
+      const savedPalette = localStorage.getItem('colorPalette');
+      if (savedPalette) {
+        return JSON.parse(savedPalette);
+      }
+    } catch (error) {
+      console.error("Error parsing palette from localStorage", error);
+    }
+    // Return default colors if nothing is saved or parsing fails
+    return {
+      primary: '#8a5a2a',
+      secondary: '#e0e0e0',
+      accent: '#6b2a1d'
+    };
+  };
+
+  const [primary, setPrimary] = useState(getInitialColors().primary);
+  const [secondary, setSecondary] = useState(getInitialColors().secondary);
+  const [accent, setAccent] = useState(getInitialColors().accent);
   const [copiedColor, setCopiedColor] = useState<string | null>(null);
   
   const primaryPalette = useMemo(() => generatePalette(primary), [primary]);
@@ -261,11 +279,14 @@ const App: React.FC = () => {
   }, []);
   
   useEffect(() => {
-    // Set initial colors from the user's image
-    setPrimary('#8a5a2a');
-    setSecondary('#e0e0e0');
-    setAccent('#6b2a1d');
-  }, []);
+    try {
+      const palette = { primary, secondary, accent };
+      localStorage.setItem('colorPalette', JSON.stringify(palette));
+    } catch (error) {
+      console.error("Failed to save palette to localStorage", error);
+    }
+  }, [primary, secondary, accent]);
+
 
   return (
     <div className="app-container">
