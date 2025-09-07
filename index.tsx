@@ -303,7 +303,7 @@ const App: React.FC = () => {
             </svg>
           </button>
         </div>
-        <p className="controls-subheader">Craft your perfect color scheme.</p>
+        <p className="controls-subheader"></p>
         
         <ColorInput label="Primary (60%)" color={primary} setColor={setPrimary} />
         <ColorInput label="Secondary (30%)" color={secondary} setColor={setSecondary} />
