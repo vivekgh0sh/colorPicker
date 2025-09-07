@@ -46,21 +46,25 @@ body {
   border-right: 1px solid var(--border-color);
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1.25rem;
 }
 
 .controls-header {
-  text-align: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .controls-header h1 {
   font-size: 1.75rem;
-  margin-bottom: 0.25rem;
+  margin-bottom: 0;
 }
 
-.controls-header p {
+.controls-subheader {
   font-size: 0.9rem;
   color: var(--label-color);
+  text-align: center;
+  margin-top: -0.75rem;
 }
 
 .color-group {
@@ -106,46 +110,61 @@ body {
   border: none;
 }
 
-.hex-input {
-  width: 100%;
+.hex-input-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
   height: 44px;
-  padding: 0 0.75rem;
   border: 1px solid var(--border-color);
   border-radius: 8px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  background-color: #fff;
+}
+
+.hex-input-container:focus-within {
+  outline: none;
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+}
+
+.hex-prefix {
+  padding-left: 0.75rem;
+  font-size: 1rem;
+  color: var(--label-color);
+}
+
+.hex-input {
+  width: 100%;
+  height: 100%;
+  padding: 0 0.75rem 0 0.5rem;
+  border: none;
+  background: transparent;
+  outline: none;
   font-family: 'Inter', sans-serif;
   font-size: 1rem;
   text-transform: uppercase;
   color: var(--text-color);
-  transition: border-color 0.2s, box-shadow 0.2s;
-}
-
-.hex-input:focus {
-  outline: none;
-  border-color: var(--accent-color);
-  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
 }
 
 .randomize-btn {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
-  width: 100%;
-  height: 48px;
-  border: none;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--border-color);
   border-radius: 8px;
-  background: linear-gradient(45deg, #3498db, #8e44ad);
-  color: white;
-  font-size: 1rem;
-  font-weight: 500;
+  background: transparent;
+  color: var(--label-color);
   cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
-  margin-top: 1rem;
+  transition: all 0.2s ease-in-out;
 }
 
 .randomize-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(52, 152, 219, 0.4);
+  border-color: var(--accent-color);
+  color: var(--accent-color);
+  background-color: rgba(52, 152, 219, 0.1);
+  transform: rotate(45deg);
 }
 
 .randomize-btn svg {

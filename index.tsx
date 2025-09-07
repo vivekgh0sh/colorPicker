@@ -84,12 +84,13 @@ type ColorInputProps = {
 
 const ColorInput = ({ label, color, setColor }: ColorInputProps) => {
   const handleHexChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let value = e.target.value;
-    if (!value.startsWith('#')) {
-      value = '#' + value;
-    }
-    setColor(value);
+    const hexValue = e.target.value.replace(/[^a-fA-F0-9]/g, '').slice(0, 6);
+    setColor('#' + hexValue);
   };
+  
+  // Ensure color is a valid hex for the color picker, otherwise fallback
+  const isValidHex = /^#[0-9A-F]{6}$/i.test(color);
+  const displayValue = color.startsWith('#') ? color.substring(1) : color;
   
   return (
     <div className="color-group">
@@ -98,17 +99,21 @@ const ColorInput = ({ label, color, setColor }: ColorInputProps) => {
         <input 
           type="color" 
           className="color-picker" 
-          value={color}
+          value={isValidHex ? color : '#000000'}
           onChange={(e) => setColor(e.target.value)}
           aria-label={`Select ${label} color`}
         />
-        <input 
-          type="text" 
-          className="hex-input"
-          value={color}
-          onChange={handleHexChange}
-          aria-label={`${label} color hex code`}
-        />
+        <div className="hex-input-container">
+          <span className="hex-prefix">#</span>
+          <input 
+            type="text" 
+            className="hex-input"
+            value={displayValue.toUpperCase()}
+            onChange={handleHexChange}
+            maxLength={6}
+            aria-label={`${label} color hex code`}
+          />
+        </div>
       </div>
     </div>
   );
@@ -293,19 +298,18 @@ const App: React.FC = () => {
       <aside className="controls">
         <div className="controls-header">
           <h1>Palette Engine</h1>
-          <p>Craft your perfect color scheme.</p>
+          <button className="randomize-btn" onClick={randomizePalette} aria-label="Randomize Palette" title="Randomize Palette">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0011.664 0M2.985 19.644L6.166 16.46m12.12-3.183a8.25 8.25 0 01-11.664 0M17.834 6.166L14.653 9.348" />
+            </svg>
+          </button>
         </div>
+        <p className="controls-subheader">Craft your perfect color scheme.</p>
         
         <ColorInput label="Primary (60%)" color={primary} setColor={setPrimary} />
         <ColorInput label="Secondary (30%)" color={secondary} setColor={setSecondary} />
         <ColorInput label="Accent (10%)" color={accent} setColor={setAccent} />
-        
-        <button className="randomize-btn" onClick={randomizePalette}>
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0011.664 0M2.985 19.644L6.166 16.46m12.12-3.183a8.25 8.25 0 01-11.664 0M17.834 6.166L14.653 9.348" />
-          </svg>
-          Randomize Palette
-        </button>
+
       </aside>
       
       <main className="preview">
