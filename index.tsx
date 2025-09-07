@@ -110,7 +110,6 @@ const ColorInput = ({ label, color, setColor }: ColorInputProps) => {
             className="hex-input"
             value={displayValue.toUpperCase()}
             onChange={handleHexChange}
-            maxLength={6}
             aria-label={`${label} color hex code`}
           />
         </div>
